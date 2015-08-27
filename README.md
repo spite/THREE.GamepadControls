@@ -7,6 +7,10 @@ The left pad controls the camera look around, the right pad controls the movemen
 
 [![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/NxHxG8_UT8o/0.jpg)](http://www.youtube.com/watch?v=NxHxG8_UT8o)
 
+Not sure if the Gamepad API is working? Check [Jumping the Hurdles with the Gamepad API](http://www.html5rocks.com/en/tutorials/doodles/gamepad/) at HTML5Rocks and try the [Tester](http://www.html5rocks.com/en/tutorials/doodles/gamepad/gamepad-tester/tester.html)
+
+For some reason, it's only working on Chrome. Firefox and Opera have support, but the Gamepads are not being listed. Safari doesn't have support. I haven't tried Edge yet.
+
 #### License ####
 
 MIT licensed
