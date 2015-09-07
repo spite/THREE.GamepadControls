@@ -12,7 +12,8 @@ THREE.GamepadControls = function ( object ) {
 	this.lon = -90;
 	this.lat = 0;
 	this.target = new THREE.Vector3();
-	
+	this.threshold = .05;
+
 	this.init = function(){
 
 		var gamepadSupportAvailable = navigator.getGamepads ||
@@ -61,6 +62,12 @@ THREE.GamepadControls = function ( object ) {
 
 	}
 
+	this.filter = function( v ) {
+
+		return ( Math.abs( v ) > this.threshold ) ? v : 0;
+
+	}
+
 	this.pollGamepads = function() {
 
 		var rawGamepads =
@@ -72,8 +79,8 @@ THREE.GamepadControls = function ( object ) {
 
 			var g = rawGamepads[ 0 ];
 			
-			this.lon += g.axes[ 0 ];
-			this.lat -= g.axes[ 1 ];
+			this.lon += this.filter( g.axes[ 0 ] );
+			this.lat -= this.filter( g.axes[ 1 ] );
 			this.lat = Math.max( - 85, Math.min( 85, this.lat ) );
 			var phi = ( 90 - this.lat ) * Math.PI / 180;
 			var theta = this.lon * Math.PI / 180;
@@ -86,7 +93,12 @@ THREE.GamepadControls = function ( object ) {
 			this.object.lookAt( this.target );
 
 			this.rotMatrix.extractRotation( this.object.matrix );
-			this.dir.set( g.axes[ 2 ], g.buttons[ 6 ].value - g.buttons[ 7 ].value, g.axes[ 3 ] );
+			this.dir.set( 
+				this.filter( g.axes[ 2 ] ), 
+				this.filter( g.buttons[ 6 ].value ) - this.filter( g.buttons[ 7 ].value ), 
+				this.filter( g.axes[ 3 ] ) 
+			);
+			this.dir.multiplyScalar( .1 );
 			this.dir.applyMatrix4( this.rotMatrix );
 			this.object.position.add( this.dir );
 			
